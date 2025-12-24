@@ -1,0 +1,82 @@
+# ==============================
+# ASSIGNMENT – PYTHON & EDA
+# SINGLE CELL CODE
+# ==============================
+
+# Import libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load dataset (update file name if needed)
+df = pd.read_csv("data.csv")
+
+# ------------------------------
+# Basic Data Exploration
+# ------------------------------
+print("First 5 rows:")
+print(df.head())
+
+print("\nLast 5 rows:")
+print(df.tail())
+
+print("\nShape of dataset:")
+print(df.shape)
+
+print("\nData types:")
+print(df.dtypes)
+
+print("\nMissing values:")
+print(df.isnull().sum())
+
+# ------------------------------
+# Statistical Summary
+# ------------------------------
+print("\nStatistical Summary:")
+print(df.describe())
+
+# ------------------------------
+# Handling Missing Values
+# ------------------------------
+df.fillna(df.mean(numeric_only=True), inplace=True)
+
+# ------------------------------
+# Duplicate Values
+# ------------------------------
+print("\nDuplicate rows:", df.duplicated().sum())
+df.drop_duplicates(inplace=True)
+
+# ------------------------------
+# Correlation Matrix
+# ------------------------------
+plt.figure()
+sns.heatmap(df.corr(numeric_only=True), annot=True)
+plt.title("Correlation Matrix")
+plt.show()
+
+# ------------------------------
+# Univariate Analysis
+# ------------------------------
+for col in df.select_dtypes(include=np.number).columns:
+    plt.figure()
+    plt.hist(df[col])
+    plt.title(f"Distribution of {col}")
+    plt.show()
+
+# ------------------------------
+# Bivariate Analysis
+# ------------------------------
+num_cols = df.select_dtypes(include=np.number).columns
+if len(num_cols) >= 2:
+    plt.figure()
+    plt.scatter(df[num_cols[0]], df[num_cols[1]])
+    plt.xlabel(num_cols[0])
+    plt.ylabel(num_cols[1])
+    plt.title("Bivariate Analysis")
+    plt.show()
+
+# ------------------------------
+# Conclusion
+# ------------------------------
+print("EDA completed successfully.")
